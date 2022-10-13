@@ -24,6 +24,11 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<String> listEmptyException(ListEmptyException listEmptyException) {
 		return new ResponseEntity<String>(listEmptyException.getMsg(), listEmptyException.getHttpStatus());
 	}
+	@ExceptionHandler(ProductException.class)
+	public ResponseEntity<String> handleException(ProductException productException) {
+		return new ResponseEntity<String>(productException.getErrorMessage(),
+				productException.getHttpStatus());
+	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class) 
 	public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(

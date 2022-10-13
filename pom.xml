@@ -86,7 +86,22 @@
                         </goals>
                         <configuration>
                             <!-- Sets the path to the file which contains the execution data. -->
+							<excludes>
 
+
+
+                               <exclude>com/catalog/CatalogApplication.class</exclude>
+                                <exclude>com/catalog/constants/*</exclude>
+                                <exclude>com/catalog/service/CategoryService.class</exclude>
+                                <exclude>com/catalog/exception/*</exclude>
+                                <exclude>com/catalog/entity/*</exclude>
+                                <exclude>com/catalog/request/*</exclude>
+                                <exclude>com/catalog/response/*</exclude>
+                                <exclude>com/catalog/**/*Test.java</exclude>
+
+
+
+                           </excludes>
 
 
                            <dataFile>target/jacoco.exec</dataFile>
