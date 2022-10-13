@@ -20,6 +20,8 @@ import com.catalog.request.CategoryUpdateRequest;
 import com.catalog.service.ICategoryService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -32,23 +34,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api")
 @Slf4j
 public class CategoryController {
-	
+
 	@Autowired
 	ICategoryService categoryService;
-
-	/**
-	 * The updateCatalog method is used to update the details of the category
-	 * 
-	 * @param categoryUpdateRequest
-	 * @return category entity
-	 */
-	@PutMapping("catalog/update-category")
-	@Operation(summary = "Updating the category levels based on levelId", description = "API related to updating the details of the  category", tags = " Update Category")
-	public ResponseEntity<Category> updateCatalog(@RequestBody CategoryUpdateRequest categoryUpdateRequest) {
-		Category categories = categoryService.updateCatalog(categoryUpdateRequest);
-		log.info("The category details are updated for the  LevelId is " + categoryUpdateRequest.getLevelId());
-		return new ResponseEntity<Category>(categories, HttpStatus.OK);
-	}
 
 	/**
 	 * This is the method to save categories
@@ -57,12 +45,28 @@ public class CategoryController {
 	 * @return categories
 	 */
 	@PostMapping("/catalog/add-category")
-	@Operation(summary = "Adding Category", description = "API for adding the category on each levels", tags = "Save Category")
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "add category to database") })
+	@Operation(summary = "Adding Category", description = "API for adding the category on each levels", tags = "Add")
 	public ResponseEntity<Category> saveCatalog(@Valid @RequestBody CategoryRequest categoryRequest) {
 		log.info("Save Controller Entry");
 		Category categories = categoryService.saveCatalog(categoryRequest);
 		log.info("Save Controller Exit");
 		return new ResponseEntity<Category>(categories, HttpStatus.CREATED);
+	}
+
+	/**
+	 * The updateCatalog method is used to update the details of the category
+	 * 
+	 * @param categoryUpdateRequest
+	 * @return category entity
+	 */
+	@PutMapping("catalog/update-category")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "update category from database") })
+	@Operation(summary = "Updating the category levels based on levelId", description = "API related to updating the details of the  category", tags = "Update")
+	public ResponseEntity<Category> updateCatalog(@RequestBody CategoryUpdateRequest categoryUpdateRequest) {
+		Category categories = categoryService.updateCatalog(categoryUpdateRequest);
+		log.info("The category details are updated for the  LevelId is " + categoryUpdateRequest.getLevelId());
+		return new ResponseEntity<Category>(categories, HttpStatus.OK);
 	}
 
 	/**
@@ -72,7 +76,8 @@ public class CategoryController {
 	 *
 	 */
 	@GetMapping("/catalog/fetch-category")
-	@Operation(summary = "Fetching category", description = "API for displaying details of fetching categories", tags = "Get Category")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "category fetched from database") })
+	@Operation(summary = "Fetching category", description = "API for displaying details of fetching categories", tags = "Get")
 	public ResponseEntity<List<Category>> fetchCatalog() {
 		log.info("Controller fetch category starts");
 		List<Category> categoryList = categoryService.fetchCategory();

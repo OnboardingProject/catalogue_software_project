@@ -63,11 +63,9 @@ public class CatalogServiceTest {
 		assertEquals(category, updateCategory);
 
 	}
- 
+
 	@Test
 	public void updateCategoryParentTest_Exception() {
-		Category category = new Category("633d48eebc392713a72d1e29", 1, "INTERNAL tools", "U213",
-				LocalDateTime.of(2020, 3, 19, 1, 0, 8, 9), "U213", LocalDateTime.of(2020, 3, 19, 1, 0, 8, 9), null);
 		CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(3, "INTERNAL", "U213", null);
 
 		try {
@@ -165,8 +163,6 @@ public class CatalogServiceTest {
 		}
 
 	}
-	
-
 
 	/**
 	 * {@link CategoryServiceImpl#saveCatalog(CategoryRequest)} This method tests
