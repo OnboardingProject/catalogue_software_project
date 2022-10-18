@@ -69,7 +69,7 @@ public class CategoryControllerTest {
 	public void saveCatalogTest_Success() throws Exception {
 
 		when(categoryService.saveCatalog(Mockito.any(CategoryRequest.class))).thenReturn(category);
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/catalog/add-category").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(MockMvcRequestBuilders.post("/category").contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(categoryRequest())))
 				.andExpect(MockMvcResultMatchers.status().isCreated());
 
@@ -87,7 +87,7 @@ public class CategoryControllerTest {
 		categoryList.add(category2);
 		when(categoryService.fetchCategory()).thenReturn(categoryList);
 		mockMvc.perform(
-				MockMvcRequestBuilders.get("/api/catalog/fetch-category").contentType(MediaType.APPLICATION_JSON))
+				MockMvcRequestBuilders.get("/category").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(200));
 
 	}
@@ -104,7 +104,7 @@ public class CategoryControllerTest {
 				LocalDateTime.now(), null);
 		CategoryUpdateRequest categoryEdit = new CategoryUpdateRequest(1, "INTERNAL", "U213", null);
 		when(categoryService.updateCatalog(Mockito.any(CategoryUpdateRequest.class))).thenReturn(category);
-		mockMvc.perform(MockMvcRequestBuilders.put("/api/catalog/update-category")
+		mockMvc.perform(MockMvcRequestBuilders.put("/category")
 				.contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(categoryEdit)))
 				.andExpect(MockMvcResultMatchers.status().isOk());
 

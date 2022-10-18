@@ -5,12 +5,11 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,13 +30,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("/product")
 public class ProductController {
 	@Autowired
 	IProductService productService;
 	@Operation(summary = "Add products ", description = "API related to add products", tags = "Add")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "add product from database") })
-	@PostMapping("/add-product")
+	@PostMapping
 	public ResponseEntity<?> addProduct(@Valid @RequestBody ProductRequest productRequest) {
 		Product product = productService.addProduct(productRequest);
 
@@ -53,7 +52,7 @@ public class ProductController {
 	 */
 	@Operation(summary = "Update products  based on product id", description = "API related to update products", tags = "Update")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "update product from database") })
-	@PutMapping("/update-product")
+	@PutMapping
 	public ResponseEntity<?> updateProduct(@Valid @RequestBody ProductUpdateRequest productUpdateRequest) {
 		Product productUpdate = productService.updateProduct(productUpdateRequest);
 
@@ -73,7 +72,7 @@ public class ProductController {
 	 */
 	@Operation(summary = "Search products  based on product name", description = "API related to search products", tags = "Get")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "search product from database") })
-	@GetMapping("/search-by-word-product")
+	@GetMapping("/search/name")
 	public ResponseEntity<List<Product>> searchByName(@RequestParam(required = true) String productName) {
 		log.info("ProductController searchByName call started with {}", productName);
 		List<Product> products = productService.searchByName(productName);
@@ -86,23 +85,6 @@ public class ProductController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	/**
-	 * Method to delete the product
-	 *
-	 * @param id and last updated by user
-	 * @return product data
-	 */
-	@Operation(summary = "Delete products  based on product id and last updated by", description = "API related to delete products", tags = "Delete")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "delete product from database") })
-	@PutMapping("/delete-product/id/{id}/lastUpdatedBy/{lastUpdatedBy}")
-	public ResponseEntity<Product> deleteProduct(@PathVariable(required = true) String id, String lastUpdatedBy) {
-		log.info("--delete product controller call start with id {} and lastUpdatedBy {}", id, lastUpdatedBy);
-		Product productData = productService.deleteProduct(id, lastUpdatedBy);
-		log.info("--delete product controller call end--");
-		return new ResponseEntity<Product>(productData, HttpStatus.OK);
-
-	}
-
 	/***
 	 * The getProductsByCategory method is to find all products based on category
 	 * 
@@ -111,7 +93,7 @@ public class ProductController {
 	 */
 	@Operation(summary = "Get products by category based on categoryLevel", description = "API related to fetch products", tags = "Get")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "products fetched from database") })
-	@GetMapping("/by-category")
+	@GetMapping("/search/category")
 	public ResponseEntity<?> getProductsByCategory(@RequestParam String categoryLevel) {
 		List<ProductResponse> productData = productService.findProductByCategory(categoryLevel);
 		log.info("products list for categorylevel " + categoryLevel);

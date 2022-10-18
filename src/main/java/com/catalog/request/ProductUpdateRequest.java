@@ -3,7 +3,7 @@ package com.catalog.request;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,13 +16,14 @@ public class ProductUpdateRequest implements Serializable{
 	 * Update Request data
 	 */
 	private static final long serialVersionUID = 1L;
-	@NotNull(message="Id field must be not null")
+	@NotEmpty(message="Id field must be not empty")
 	private String id;
 	private String productName;
 	private Float contractSpend;
 	private int stakeholder;
 	private List<String> categoryLevel;	
 	private String lastUpdateBy;
-	private List<String> categoryDescription;
+	private Boolean isDeleted;
+	private List<String> categoryLevelDescription;
 	private String productDescription;
 }

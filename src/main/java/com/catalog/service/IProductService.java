@@ -14,8 +14,6 @@ public interface IProductService {
 
 	Product updateProduct(ProductUpdateRequest productUpdateRequest);
 
-	public Product deleteProduct(String id, String lastUpdatedBy);
-
 	List<ProductResponse> findProductByCategory(String CategoryLevel);
 
 }

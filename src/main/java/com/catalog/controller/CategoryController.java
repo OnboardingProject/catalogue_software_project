@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/category")
 @Slf4j
 public class CategoryController {
 
@@ -44,7 +44,7 @@ public class CategoryController {
 	 * @param categoryRequest
 	 * @return categories
 	 */
-	@PostMapping("/catalog/add-category")
+	@PostMapping
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "add category to database") })
 	@Operation(summary = "Adding Category", description = "API for adding the category on each levels", tags = "Add")
 	public ResponseEntity<Category> saveCatalog(@Valid @RequestBody CategoryRequest categoryRequest) {
@@ -60,7 +60,7 @@ public class CategoryController {
 	 * @param categoryUpdateRequest
 	 * @return category entity
 	 */
-	@PutMapping("catalog/update-category")
+	@PutMapping
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "update category from database") })
 	@Operation(summary = "Updating the category levels based on levelId", description = "API related to updating the details of the  category", tags = "Update")
 	public ResponseEntity<Category> updateCatalog(@RequestBody CategoryUpdateRequest categoryUpdateRequest) {
@@ -75,7 +75,7 @@ public class CategoryController {
 	 * @return category list
 	 *
 	 */
-	@GetMapping("/catalog/fetch-category")
+	@GetMapping
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "category fetched from database") })
 	@Operation(summary = "Fetching category", description = "API for displaying details of fetching categories", tags = "Get")
 	public ResponseEntity<List<Category>> fetchCatalog() {
