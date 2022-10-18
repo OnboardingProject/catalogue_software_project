@@ -3,7 +3,7 @@ package com.catalog.request;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,10 +16,11 @@ public class ProductRequest implements Serializable {
 	 * Product Request data
 	 */
 	private static final long serialVersionUID = 1L;
+	@NotEmpty(message="Product Name cannot be empty")
 	private String productName;	
 	private Float contractSpend;
-	private int stakeholder;
-	@NotNull
+	private Integer stakeholder;
+	@NotEmpty(message="Category Level cannot be empty")
 	private List<String> categoryLevel;
 	private String createdBy;	
 	private String lastUpdateBy;	

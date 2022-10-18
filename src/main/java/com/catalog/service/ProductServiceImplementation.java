@@ -34,7 +34,6 @@ public class ProductServiceImplementation implements IProductService {
 	 * @param:CategoryLevel
 	 * @return: products with specified category and replaces levelId with levelName
 	 * 
-	 * @exception:ProductNotFoundException
 	 */
 
 	@Override
@@ -145,7 +144,8 @@ public class ProductServiceImplementation implements IProductService {
 				getproduct.setContractSpend(productUpdateRequest.getContractSpend());
 				getproduct.setStakeholder(productUpdateRequest.getStakeholder());
 				getproduct.setCategoryLevel(productUpdateRequest.getCategoryLevel());
-				getproduct.setCategoryLevelDescription(productUpdateRequest.getCategoryDescription());
+				getproduct.setCategoryLevelDescription(productUpdateRequest.getCategoryLevelDescription());
+				getproduct.setIsDeleted(productUpdateRequest.getIsDeleted());
 				getproduct.setLastUpdatedBy(productUpdateRequest.getLastUpdateBy());
 				getproduct.setLastUpdatedTime(LocalDateTime.now());
 				Product updatedproduct = productRepository.save(getproduct);
@@ -162,37 +162,6 @@ public class ProductServiceImplementation implements IProductService {
 			throw new ProductException(Constants.DB_EXCEPTION, HttpStatus.CONFLICT);
 		}
 	}
-	/**
-	 * Method to delete the product
-	 *
-	 * @param id,lastUpdatedBy
-	 * @return Product
-	 */
-	@Override
-	public Product deleteProduct(String id, String lastUpdatedBy) {
-		log.info("--deleting product service call start with id {}", id);
-		try {
-			Optional<Product> productData = productRepository.findById(id);
-
-			if (productData.isPresent()) {
-				Product product = productData.get();
-
-				product.setIsDeleted(true);
-				product.setLastUpdatedBy(lastUpdatedBy);
-				product.setLastUpdatedTime(LocalDateTime.now());
-				Product updateddProduct = productRepository.save(product);
-
-				return updateddProduct;
-
-			} else {
-				log.error("--product id not found--");
-				throw new ProductException(Constants.NO_PRODUCT_DETAILS, HttpStatus.NOT_FOUND);
-
-			}
-		} catch (ProductException ex) {
-			log.error(lastUpdatedBy);
-			throw new ProductException(Constants.SAVE_FAILED, HttpStatus.BAD_REQUEST);
-		}
-	}
+	
 
 }

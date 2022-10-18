@@ -90,7 +90,7 @@ public class ProductControllerTest {
 		categorylevel.add("2-2-1");
 		List<String> categoryleveldes = new LinkedList<String>();
 		categoryleveldes.add("Category description");
-		ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest("Pjt111", "Azure", 10f,6, categorylevel,"nisha",categoryleveldes,"Description");
+		ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest("Pjt111", "Azure", 10f,6, categorylevel,"nisha",false, categoryleveldes,"Description");
 		return productUpdateRequest;
 	}
 	/**{@link ProductController #updateProduct(UpdateDTO) with response}
@@ -107,7 +107,7 @@ public class ProductControllerTest {
 		Product product=new Product("pjt111","Azure",10f,7,category,"viji",time,"raj",time,false,categoryleveldes,"product description");
     	
         when(productServiceImplementation.addProduct(Mockito.any(ProductRequest.class))).thenReturn(product);
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/product/add-product")
+        mockMvc.perform(MockMvcRequestBuilders.post("/product")
                 .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(productRequest)))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
     }
@@ -119,7 +119,7 @@ public class ProductControllerTest {
 		List<String> categoryleveldes = new LinkedList<String>();
 		categoryleveldes.add("Category description");
 		ProductRequest productRequest = new ProductRequest("",10f,7,null,"viji","raj",false,categoryleveldes,"Description");	
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/product/add-product")
+        mockMvc.perform(MockMvcRequestBuilders.post("/product")
                 .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(productRequest)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
  
@@ -141,11 +141,11 @@ public class ProductControllerTest {
     	productUpdateRequest.setContractSpend(10f);
     	productUpdateRequest.setStakeholder(5);
     	productUpdateRequest.setCategoryLevel(category);
-    	productUpdateRequest.setCategoryDescription(categoryleveldes);
+    	productUpdateRequest.setCategoryLevelDescription(categoryleveldes);
     	productUpdateRequest.setLastUpdateBy("nisha");  
     	
         when(productServiceImplementation.updateProduct(Mockito.any(ProductUpdateRequest.class))).thenReturn(product);
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/product/update-product")
+        mockMvc.perform(MockMvcRequestBuilders.put("/product")
                 .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(productUpdateRequest)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
@@ -158,8 +158,8 @@ public class ProductControllerTest {
 		List<String> categoryleveldes = new LinkedList<String>();
 		categoryleveldes.add("Category description");
 		 when(productServiceImplementation.updateProduct(Mockito.any(ProductUpdateRequest.class))).thenReturn(null);
-		 ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest("Pjt111", "Azure", 10f,6, category,"nisha",categoryleveldes,"Description");
-		mockMvc.perform(MockMvcRequestBuilders.put("/api/product/update-product").contentType(MediaType.APPLICATION_JSON)
+		 ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest("Pjt111", "Azure", 10f,6, category,"nisha",false, categoryleveldes,"Description");
+		mockMvc.perform(MockMvcRequestBuilders.put("/product").contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(productUpdateRequest)))
 				.andExpect(MockMvcResultMatchers.status().isConflict());
  
@@ -171,7 +171,7 @@ public class ProductControllerTest {
 	public void searchByNameTestSucess() throws JsonProcessingException, Exception {
 
 		when(productServiceImplementation.searchByName(Mockito.anyString())).thenReturn(product());
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/product/search-by-word-product").param("productName", "Azure")
+		mockMvc.perform(MockMvcRequestBuilders.get("/product/search/name").param("productName", "Azure")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk());
 
 	}
@@ -181,28 +181,10 @@ public class ProductControllerTest {
 	@Test
 	public void searchByNameTestFailure() throws JsonProcessingException, Exception {
 		when(productServiceImplementation.searchByName(Mockito.anyString())).thenReturn(null);
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/product/search-by-word-product").param("productName", "Teams")
+		mockMvc.perform(MockMvcRequestBuilders.get("/product/search/name").param("productName", "Teams")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isNoContent());
 	}
-	/**{@link ProductController #deleteProduct(String, String) with response}
-	 * 
-	 */
-    
-	@Test
-	public void deleteProductTest() throws Exception {
-
-		ProductRequest productRequest = addProductTestData();
-		productRequest.setDeleted(true);
-		productRequest.setLastUpdateBy("user1");
-
-		Product product = new Product("pjt111", "Azure", 10f, 7, categoryLevel(), "viji", time, "raj", time, false,
-				categoryLevel(), "product description");
-
-		when(productServiceImplementation.deleteProduct(Mockito.anyString(), Mockito.anyString())).thenReturn(product);
-		mockMvc.perform(MockMvcRequestBuilders.put("/api/product/delete-product/id/ID001/lastUpdatedBy/user1")
-				.accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk());
-
-	}
+	
 
 	/***
 	 * Test for findProductByCategoryTest
@@ -218,7 +200,7 @@ public class ProductControllerTest {
 		List<ProductResponse> productResponseVoList = new ArrayList<>();
 		productResponseVoList.add(productResponseVo);
 		when(productServiceImplementation.findProductByCategory(Mockito.anyString())).thenReturn(productResponseVoList);
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/product/by-category?categoryLevel=1")
+		mockMvc.perform(MockMvcRequestBuilders.get("/product/search/category?categoryLevel=1")
 				.contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString("1-1-1")))
 				.andExpect(MockMvcResultMatchers.status().isOk());
 		verify(productServiceImplementation, times(1)).findProductByCategory(Mockito.anyString());

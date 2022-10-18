@@ -2,7 +2,6 @@ package com.catalog.servicetest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -22,7 +21,6 @@ import org.springframework.http.HttpStatus;
 
 import com.catalog.entity.Product;
 import com.catalog.exception.ProductException;
-import com.catalog.helper.ProductHelper;
 import com.catalog.repository.ProductRepository;
 import com.catalog.request.ProductRequest;
 import com.catalog.request.ProductUpdateRequest;
@@ -60,7 +58,7 @@ public class ProductServiceTest {
 		List<String> categoryleveldes = new LinkedList<String>();
 		categoryleveldes.add("Category description");
 		ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest("Pjt111", "Azure", 10f, 6, categorylevel,
-				"nisha", categoryleveldes, "Description");
+				"nisha", false, categoryleveldes, "Description");
 		return productUpdateRequest;
 	}
 
@@ -200,35 +198,6 @@ public class ProductServiceTest {
 		ProductException ex = assertThrows(ProductException.class, () -> serviceImplementation.searchByName("M"));
 		assertEquals("DB Exception occured", ex.getErrorMessage());
 	}
-
-	@Test
-	public void deleteProductTestSuccess() throws Exception {
-		when(productRepository.findById(Mockito.any())).thenReturn(Optional.of(ProductHelper.getProduct()));
-		when(productRepository.save(Mockito.any())).thenReturn(ProductHelper.getProduct());
-		Product productResponse = serviceImplementation.deleteProduct("pdt1", "user1");
-		assertEquals(productResponse.getLastUpdatedBy(), "user1");
-
-	}
-
-	@Test
-	public void deleteProduct_NullPointerException() {
-		try {
-			serviceImplementation.deleteProduct(null, null);
-		} catch (Exception e) {
-			assertTrue(e instanceof ProductException);
-		}
-	}
-
-	@Test
-	public void deleteProduct_IdNotFoundException() {
-		try {
-			serviceImplementation.deleteProduct("pdt1", "user1");
-		} catch (Exception e) {
-			assertTrue(e instanceof ProductException);
-		}
-
-	}
-
 	/***
 	 * 
 	 * Test of findProductByCategory for success
