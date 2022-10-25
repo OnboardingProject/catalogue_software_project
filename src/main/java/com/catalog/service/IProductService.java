@@ -15,5 +15,7 @@ public interface IProductService {
 	Product updateProduct(ProductUpdateRequest productUpdateRequest);
 
 	List<ProductResponse> findProductByCategory(String CategoryLevel);
+	
+	List<Product> findAllProducts();
 
 }
