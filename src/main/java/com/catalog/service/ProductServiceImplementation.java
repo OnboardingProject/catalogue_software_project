@@ -162,6 +162,14 @@ public class ProductServiceImplementation implements IProductService {
 			throw new ProductException(Constants.DB_EXCEPTION, HttpStatus.CONFLICT);
 		}
 	}
+	/***
+	 * This method will fetch all the products
+	 */
+	@Override
+	public List<Product> findAllProducts() {
+		log.info("Find All Products");
+		return productRepository.findAll();
+	}
 	
 
 }

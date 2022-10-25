@@ -100,5 +100,20 @@ public class ProductController {
 		return new ResponseEntity<>(productData, HttpStatus.OK);
 
 	}
+	/***
+	 * The getAllProducts method is to get all products
+	 * 
+	 * @return allProducts
+	 * 
+	 */
+	@Operation(summary = "Get all products", description = "API related to fetch products", tags = "Get")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "products fetched from database") })
+	@GetMapping
+	public ResponseEntity<?> getAllProducts() {
+		List<Product> allProducts = productService.findAllProducts();
+		log.info("get all products ");
+		return new ResponseEntity<>(allProducts, HttpStatus.OK);
+
+	}
 
 }
